@@ -5,35 +5,32 @@
 package sample.javaee.userapp.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author BBC300041
  */
 @Entity
-@Table(name = "USR")
+@Table(name = "MESSAGE")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usr.findAll", query = "SELECT u FROM Usr u"),
-    @NamedQuery(name = "Usr.findById", query = "SELECT u FROM Usr u WHERE u.id = :id"),
-    @NamedQuery(name = "Usr.findByName", query = "SELECT u FROM Usr u WHERE u.name = :name"),
-    @NamedQuery(name = "Usr.findByMail", query = "SELECT u FROM Usr u WHERE u.mail = :mail")})
-public class Usr implements Serializable {
+    @NamedQuery(name = "Message.findAll", query = "SELECT m FROM Message m"),
+    @NamedQuery(name = "Message.findById", query = "SELECT m FROM Message m WHERE m.id = :id"),
+    @NamedQuery(name = "Message.findByMessage", query = "SELECT m FROM Message m WHERE m.message = :message")})
+public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,18 +38,16 @@ public class Usr implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Size(max = 512)
-    @Column(name = "NAME")
-    private String name;
-    @Size(max = 512)
-    @Column(name = "MAIL")
-    private String mail;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<Message> messageCollection;
+    @Column(name = "MESSAGE")
+    private String message;
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Usr userId;
 
-    public Usr() {
+    public Message() {
     }
 
-    public Usr(Integer id) {
+    public Message(Integer id) {
         this.id = id;
     }
 
@@ -64,29 +59,20 @@ public class Usr implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getMessage() {
+        return message;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getMail() {
-        return mail;
+    public Usr getUserId() {
+        return userId;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    @XmlTransient
-    public Collection<Message> getMessageCollection() {
-        return messageCollection;
-    }
-
-    public void setMessageCollection(Collection<Message> messageCollection) {
-        this.messageCollection = messageCollection;
+    public void setUserId(Usr userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -99,10 +85,10 @@ public class Usr implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Usr)) {
+        if (!(object instanceof Message)) {
             return false;
         }
-        Usr other = (Usr) object;
+        Message other = (Message) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -111,7 +97,7 @@ public class Usr implements Serializable {
 
     @Override
     public String toString() {
-        return "sample.javaee.userapp.entity.Usr[ id=" + id + " ]";
+        return "sample.javaee.userapp.entity.Message[ id=" + id + " ]";
     }
     
 }

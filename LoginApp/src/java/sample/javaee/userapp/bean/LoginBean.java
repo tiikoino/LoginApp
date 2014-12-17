@@ -28,7 +28,7 @@ public class LoginBean implements Serializable {
     }
 
     public String loginCheck() {
-        Usr findUsr = usrFacade.find(name);
+        Usr findUsr = usrFacade.findByName(name);
 
         if (findUsr != null) {
             if (name.equals(findUsr.getName())) {

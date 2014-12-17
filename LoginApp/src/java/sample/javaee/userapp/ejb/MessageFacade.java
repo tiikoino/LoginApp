@@ -7,15 +7,14 @@ package sample.javaee.userapp.ejb;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import sample.javaee.userapp.entity.Usr;
+import sample.javaee.userapp.entity.Message;
 
 /**
  *
  * @author BBC300041
  */
 @Stateless
-public class UsrFacade extends AbstractFacade<Usr> {
+public class MessageFacade extends AbstractFacade<Message> {
     @PersistenceContext(unitName = "UserAppPU")
     private EntityManager em;
 
@@ -24,17 +23,8 @@ public class UsrFacade extends AbstractFacade<Usr> {
         return em;
     }
 
-    public Usr findByName(String name) {
-        Query query = getEntityManager().createNamedQuery("Usr.findByName");
-        if(name == null || name.equals("")){
-            query.setParameter("name", name);
-            return (Usr)query.getSingleResult();
-        }
-        return null;
-    }
-
-    public UsrFacade() {
-        super(Usr.class);
+    public MessageFacade() {
+        super(Message.class);
     }
     
 }
