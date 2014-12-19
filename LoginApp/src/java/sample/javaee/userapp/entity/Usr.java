@@ -111,7 +111,7 @@ public class Usr implements Serializable {
 
     @Override
     public String toString() {
-        return "sample.javaee.userapp.entity.Usr[ id=" + id + " ]";
+        return "Usr{" + "id=" + id + ", name=" + name + ", mail=" + mail + ", messageCollection=" + messageCollection + '}';
     }
-    
+
 }
