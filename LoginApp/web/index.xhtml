@@ -9,8 +9,10 @@
         <h:form>
             <h:panelGrid columns="2">
                 name
-                <h:inputText value="#{loginBean.name}"/>
+                <!-- loginBeanへ値を受け渡す。必須入力として、入力チェックを実施 -->
+                <h:inputText id="name" value="#{loginBean.name}" required="true"/>
 
+                <!-- loginBeanのメソッド呼び出し -->
                 <h:commandButton value="Login"
                                  action="#{loginBean.loginCheck()}"/>
             </h:panelGrid>

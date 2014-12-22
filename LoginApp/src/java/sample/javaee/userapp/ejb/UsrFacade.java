@@ -4,6 +4,7 @@
  */
 package sample.javaee.userapp.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,13 +25,14 @@ public class UsrFacade extends AbstractFacade<Usr> {
         return em;
     }
 
-    public Usr findByName(String name) {
+    // nameにてDB検索実施メソッド
+    public List<Usr> findByName(String name) {
+        // Usrエンティティクラスにて、宣言されている名前付きクエリの実行
         Query query = getEntityManager().createNamedQuery("Usr.findByName");
-        if(name == null || name.equals("")){
-            query.setParameter("name", name);
-            return (Usr)query.getSingleResult();
-        }
-        return null;
+        // 検索条件のパラメータを設定
+        query.setParameter("name", name);
+        // 検索実行
+        return query.getResultList();
     }
 
     public UsrFacade() {

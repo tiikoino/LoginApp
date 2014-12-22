@@ -12,25 +12,29 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import sample.javaee.userapp.entity.Usr;
 
-@Named(value = "userMain")
-@Dependent
-@Stateless
+@Named(value = "userMain")// ManagedBean宣言
+@Dependent// スコープの宣言
+@Stateless// EBJ 宣言
 public class UserMain implements Serializable{
+    
+    // EntityManager宣言
     @PersistenceContext(unitName = "UserAppPU")
     private  EntityManager em;
 
+    // EL式でアクセスされるフィールド
     private Usr isa;
     
+    // xhtmlから呼び出されるメソッド
     public void sample(){
         
         //User オブジェクトの生成
         createUsr();
         
 // ① EntityManagerを用いた検索
-//        insertWithEntityManager();
+        insertWithEntityManager();
         selectWithEntityManager();
-//        updateWithEntityManager();
-//        deleteWithEntityManager();
+        updateWithEntityManager();
+        deleteWithEntityManager();
         
 // ② JPQLを用いた検索
         selectWithJPQL();
@@ -42,6 +46,7 @@ public class UserMain implements Serializable{
        selectWithNativeQuery();
     }
     
+// オブジェクトの生成
     public void createUsr(){
         isa = new Usr();
         isa.setName("isa");
@@ -51,22 +56,23 @@ public class UserMain implements Serializable{
 // ① EntityManagerを用いた検索 -------------------------------------------------
     @Transactional(Transactional.TxType.REQUIRED)
     public void insertWithEntityManager(){
-        //insert
+        //INSERT処理
         em.persist(isa);
+        // insert処理をDBへ反映
         em.flush();
         System.out.println("EntityManager INSERT:" + em.createNamedQuery("Usr.findAll").getResultList());
     }        
 
     @Transactional(Transactional.TxType.SUPPORTS)
     public void selectWithEntityManager(){
-        //select
+        //SELECT処理　find(検索したエンティティのクラスObj,主キーの値)
         Usr selectUsr = em.find(Usr.class, 4);
         System.out.println("EntityManager SELECT:" + selectUsr);
     }
 
     @Transactional(Transactional.TxType.REQUIRED)
     public void updateWithEntityManager(){
-        //update
+        //UPDATE処理
         isa.setName("isa yukari");
         Usr updateUsr = em.merge(isa);
         System.out.println("EntityManager UPDATE:" + updateUsr);
@@ -74,7 +80,7 @@ public class UserMain implements Serializable{
 
     @Transactional(Transactional.TxType.SUPPORTS)
     public void deleteWithEntityManager(){
-        //delete
+        //DELETE処理
         em.remove(isa);
         System.out.println("EntityManager DELETE:" + em.createNamedQuery("Usr.findAll").getResultList());
     }
